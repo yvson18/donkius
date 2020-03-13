@@ -1,0 +1,55 @@
+module exibirLed(led_1, led_2, led_3, led_0, identificador, clk);
+	
+	input[1:0]identificador;
+	input clk;
+	output reg led_1, led_2, led_3, led_0;
+	
+	integer contador = 0, flag = 0, enable = 0;
+	
+	always@(posedge enable)
+	begin
+		while(contador < 5000)
+			contador = contador + 1;
+		if(contador == 5000)
+		begin
+			contador <= 0;
+			flag <= 1;
+		end
+	end
+	
+	always@(clk)
+	begin
+		if(flag == 1)
+		begin
+			flag <= 0;
+			led_0 <= 0;
+			led_1 <= 0;
+			led_2 <= 0;
+			led_3 <= 0;
+			enable <= 0;
+		end// if
+		else
+		case(identificador)
+			0:
+			begin
+				led_0 <= 1;
+				enable <= 1;
+			end//case 0
+			1:
+			begin
+				led_1 <= 1;
+				enable <= 1;
+			end//case 1
+			2:
+			begin
+				led_2 <= 1;
+				enable <= 1;
+			end// case 2
+			3:
+			begin
+				led_3 <= 1;
+				enable <= 1;
+			end// case 3
+			endcase
+	end//always	
+endmodule

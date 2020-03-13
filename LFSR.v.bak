@@ -1,0 +1,70 @@
+module LFSR(output reg[3:0]random_0, output reg[3:0]random_1, input clk);
+	reg[3:0]rnd = 4'b1110;
+	reg[3:0]aux;
+	
+	integer contador_0 = 0, contador_1 = 0, contador_2 = 0, contador_3 = 0;
+	
+	always@(posedge clk)begin
+		rnd[0] <= rnd[2] ^ rnd[3];
+		rnd[1] <= rnd[0];
+		rnd[2] <= rnd[1];
+		rnd[3] <= rnd[2];
+	end//always
+	
+	always@(rnd)begin
+		if(rnd % 4 == 0)begin
+			aux[0] = 1'b1;
+		end else aux[0] = 1'b0;
+		if(rnd % 4 == 1)begin
+			aux[1] = 1'b1;
+		end else aux[1] = 1'b0;
+		if(rnd % 4 == 2)begin
+			aux[2] = 1'b1;
+		end else aux[2] = 1'b0;
+		if(rnd % 4 == 3)begin
+			aux[3] = 1'b1;
+		end 
+		else aux[3] = 1'b0;
+	end//always
+	
+	always@(posedge aux[0])
+	begin
+		if((contador_0 + contador_1 + contador_2 + contador_3) < 4)
+		begin
+			random_0[contador_0 + contador_1 + contador_2 + contador_3] = 1'b0;
+			random_1[contador_0 + contador_1 + contador_2 + contador_3] = 1'b0;
+			contador_0 <= contador_0 + 1;
+		end//if
+	end//always
+	
+	always@(posedge aux[1])
+	begin
+		if((contador_0 + contador_1 + contador_2 + contador_3) < 4)
+		begin
+			random_0[contador_0 + contador_1 + contador_2 + contador_3] = 1'b1;
+			random_1[contador_0 + contador_1 + contador_2 + contador_3] = 1'b0;
+			contador_1 <= contador_1 + 1;
+		end//if
+	end//always
+	
+	always@(posedge aux[2])
+	begin
+		if((contador_0 + contador_1 + contador_2 + contador_3) < 4)
+		begin
+			random_1[contador_0 + contador_1 + contador_2 + contador_3] = 1'b1;
+			random_0[contador_0 + contador_1 + contador_2 + contador_3] = 1'b0;
+			contador_2 <= contador_2 + 1;
+		end//if
+	end//always
+	
+	always@(posedge aux[3])
+	begin
+		if((contador_0 + contador_1 + contador_2 + contador_3) < 4)
+		begin
+			random_1[contador_0 + contador_1 + contador_2 + contador_3] = 1'b1;
+			random_0[contador_0 + contador_1 + contador_2 + contador_3] = 1'b1;
+			contador_3 <= contador_3 + 1;
+		end//if
+	end//always
+	
+endmodule

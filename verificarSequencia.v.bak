@@ -1,0 +1,24 @@
+module verificarSequencia(sequencia, entrada, saida);
+	output saida;
+	input [3:0]sequencia;
+	input[3:0]entrada;
+	
+	integer flag_0, flag_1, flag_2, flag_3;
+	
+	always@(*)
+	begin
+		flag_0 = (sequencia[0] == entrada[0])? 1 : 0;
+		flag_1 = (sequencia[1] == entrada[1])? 1 : 0;
+		flag_2 = (sequencia[2] == entrada[2])? 1 : 0;
+		flag_3 = (sequencia[3] == entrada[3])? 1 : 0;
+		
+		if(flag_0 == 1 && flag_3 == 1 && flag_2 && flag_1 == 1)
+		begin
+			saida = 1;
+		end
+		else
+			saida = 0;
+	end//always
+	
+	
+endmodule
